@@ -4,20 +4,10 @@ from collections import Counter
 import json
 import csv
 
+from util import *
+
 DATA_FILE = '../json/review.json'
-
-
-def load_biz_to_uni():
-    mp = {}
-    with open('../json/biz.json', 'rb') as reader:
-        for line in reader:
-            try:
-                biz = json.loads(line)
-            except ValueError, e:
-                continue
-            mp[biz['business_id']] = biz['schools']
-    return mp
-
+    
 def run():
     counts = {}
     uni_dicts = {}
@@ -38,7 +28,7 @@ def run():
                 counts[uni] += 1
             
             text = review['text']
-            for word in text.lower().split():
+            for word in set(text.lower().split()):
                 if word not in stop:
                     for uni in unis:
                         uni_dicts[uni][word] += 1

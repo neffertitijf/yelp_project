@@ -4,14 +4,15 @@ import json
 from datetime import datetime
 from datetime import timedelta
 
-DATA_FILE = 'review.json'
+DATA_FILE = '../json/review.json'
 MIN_RATINGS = 500
 
 import matplotlib.pyplot as plt
-
+from util import *
 
 def split_data():
     counts = {}
+    biz_to_name = map_biz_id_to_name()
     with open(DATA_FILE, 'rb') as reader:
         for line in reader:
             try:
@@ -40,19 +41,22 @@ def split_data():
 
         if sum(good.values()) + sum(bad.values()) < MIN_RATINGS:
             continue
-        print biz
         
         pds, pcounts = aggregate_counts(good.items())
-        smoothed = smooth_counts(pcounts)
+        # smoothed = smooth_counts(pcounts)
 
-        plt.plot(pds, smoothed)
+        p, = plt.plot(pds, pcounts, label="Positive Reviews")
         
         nds, ncounts = aggregate_counts(bad.items())
-        smoothed = smooth_counts(ncounts)
+        # smoothed = smooth_counts(ncounts)
 
-        plt.plot(nds, smoothed)
-        plt.show()
-        break
+        n, = plt.plot(nds, ncounts, label="Negative Reviews")
+        plt.title(biz_to_name[biz] + " Review Counts Over Time")
+        plt.xlabel('Time')
+        plt.ylabel('Number of Reviews')
+        plt.legend(handles=[p, n])
+        plt.savefig('../results/over_time/by_biz/' + biz + '.png')
+        plt.clf()
 
 def smooth_counts(counts):
     count = counts[0]
@@ -75,11 +79,9 @@ def aggregate_counts(tuples):
     for nd, n in zip(ds, neg_count):
         if nd - d >= timedelta(days=31):
             new_counts.append(rev)
-            rev = n
             new_ds.append(d)
             d = nd
-        else:
-            rev += n
+        rev += n
     return new_ds, new_counts
 
 

@@ -22,7 +22,7 @@ def run():
             stars = int(review['stars'])
             counts[stars] += 1
             text = review['text']
-            for word in text.lower().split():
+            for word in set(text.lower().split()):
                 if word not in stop:
                     star_dicts[stars][word] += 1
 
