@@ -26,8 +26,9 @@ def run():
                 uni_dicts.setdefault(uni, Counter())
                 counts.setdefault(uni, 0)
                 counts[uni] += 1
-            
+                
             text = review['text']
+            # eliminate punctuation
             for word in set(text.lower().split()):
                 if word not in stop:
                     for uni in unis:

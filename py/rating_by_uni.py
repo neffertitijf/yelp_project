@@ -36,23 +36,23 @@ def split_data():
                     else:
                         counts[uni]['good'][date] += 1
 
-    for uni, ratings in counts.iteritems():
-        good = ratings['good']
-        bad = ratings['bad']
+    # for uni, ratings in counts.iteritems():
+    #     good = ratings['good']
+    #     bad = ratings['bad']
         
-        pds, pcounts = aggregate_counts(good.items())
+    #     pds, pcounts = aggregate_counts(good.items())
 
-        p, = plt.plot(pds, pcounts, label="Positive Reviews")
+    #     p, = plt.plot(pds, pcounts, label="Positive Reviews")
         
-        nds, ncounts = aggregate_counts(bad.items())
+    #     nds, ncounts = aggregate_counts(bad.items())
 
-        n, = plt.plot(nds, ncounts, label="Negative Reviews")
-        plt.title(uni + " Cumilative Number of Reviews")
-        plt.xlabel('Time')
-        plt.ylabel('Number of Reviews')
-        plt.legend(handles=[p, n])
-        plt.savefig('../results/over_time/by_uni/' + uni + '.png')
-        plt.clf()
+    #     n, = plt.plot(nds, ncounts, label="Negative Reviews")
+    #     plt.title(uni + " Cumilative Number of Reviews")
+    #     plt.xlabel('Time')
+    #     plt.ylabel('Number of Reviews')
+    #     plt.legend(handles=[p, n])
+    #     plt.savefig('../results/over_time/by_uni/' + uni + '.png')
+    #     plt.clf()
 
 def aggregate_counts(tuples):
     tuples = sorted(tuples, key=lambda a: a[0])
